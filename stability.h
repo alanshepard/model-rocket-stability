@@ -1,8 +1,9 @@
 /*stability.h*/
 /*This library contains functions to calculate the stability of model rockets*/
 
-#ifndef STABILITY_LIB
-#define STABILITY_LIB
+#ifndef STABILITY_H
+#define STABILITY_H
+#include <math.h>
 
 /*Barowman method*/
 

@@ -1,8 +1,11 @@
 /*ellipticalWing.h*/
-/*This library is used to model an elipitical wing with a NACA four-series profile to a trapezoidal wing to which the Barrowman method may be applied.*/
+/*This library is used to model an elipitical wing with a NACA four-series
+ * profile to a trapezoidal wing to which the Barrowman method may be
+ * applied.*/
 
-#ifndef ELLIPTICALWING_LIB
-#define ELLIPTICALWING_LIB
+#ifndef ELLIPTICALWING_H
+#define ELLIPTICALWING_H
+#include <math.h>
 
 /*t is the maximum thickness of the profile in relation to the chord.*/
 
@@ -12,7 +15,7 @@
 /*Some constants are used without explanation. For an explanation, please refer
  * to the author notes*/
 
-/*TAPERRATIO: tipChord/rootChord of the trapezoid which approximates the
+/*TAPERRATIO: tipChord/rootChord of the trapezoid which best approximates an
  * ellipse.*/
 #define TAPERRATIO 0.340287364086 
 
