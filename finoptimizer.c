@@ -15,27 +15,39 @@
 #include <math.h>
 #include "stability.h"
 #include "ellipticalWing.h"
-#define PRECISION 1e-8
+#define PRECISION 1e-2
 #define DENSITY 1.25 /*PLA density*/
+//#define DEBUG
 
 double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double a);
 
 main(){
 	const double M0=30, CM0=20, CN0=2, Z0=0, length=40, t=0.08, aspectRatio=2, bodyRadius=1;
 	int nfins=3;
-	int i=0; /*DEBUG*/
 	
 	double x; /*x is approaching a*/
 	double interval[2]={0,length/2}; /*we know a is in this interval*/
 	double step=(interval[1]-interval[0])/2;
 
+#ifdef DEBUG
+	int iterationCounter=0; /*DEBUG*/
+#endif
+
 	/*This loop progressively diminishes the size of the interval, until it
 	 * is smaller than the precision*/
 	while(interval[1]-interval[0]>PRECISION){
-		fprintf(stderr,"iteration %u, interval: %lf %lf\n",++i,interval[0],interval[1]); /*DEBUG*/
+
+#ifdef DEBUG
+		fprintf(stderr,"iteration %u, interval: %lf %lf\n",++iterationCounter,interval[0],interval[1]); /*DEBUG*/
+#endif
+
 		double current,last=-HUGE_VAL; /*stores stability coeficients*/
 		for(x=interval[0];(current=stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, x))<=1;x+=step){
+
+#ifdef DEBUG
 			fprintf(stderr,"x=%lf, coefficient=%lf\n",x,current); /*DEBUG*/
+#endif
+
 			if(x>interval[1] || current<last){ /*passed by the maximum value without noticing it*/
 				/*prepare for a finer search*/
 				step/=2;
@@ -45,8 +57,10 @@ main(){
 			}
 			last=current;
 		}
-		
+
+#ifdef DEBUG		
 		fprintf(stderr,"x=%lf, coefficient=%lf\n",x,current); /*DEBUG*/
+#endif
 
 		/*update parameters increasing the accuracy. Each in
 		 * each iteration the accuracy doubles*/
