@@ -1,3 +1,12 @@
+/* 
+ * finoptimizer.c
+ * 
+ * Copyright (C) 2015 Bernardo <b.b.monteiro@gmail.com>
+ *
+ * This file is released under the GPLv2
+ */
+
+
 /*Expected input: 
  * M0: rocket's mass without fins;
  * CM0: rocket's center of mass without fins. Origin is on the tip of the nose;
@@ -89,6 +98,8 @@ main(){
 	printf("aspect ratio = %lf\n",aspectRatio);
 	printf("stability coefficient = %lf\n",stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, a));
 	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,2*a*t);
+
+	printf("\n");
 }
 
 /*stabilityCoefficient: returns the stability coefficient for a

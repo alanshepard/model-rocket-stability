@@ -1,4 +1,11 @@
-/*stability.h*/
+/* 
+ * stability.h
+ * 
+ * Copyright (C) 2015 Bernardo <b.b.monteiro@gmail.com>
+ *
+ * This file is released under the GPLv2
+ */
+
 /*This library contains functions to calculate the stability of model rockets*/
 
 #ifndef STABILITY_H

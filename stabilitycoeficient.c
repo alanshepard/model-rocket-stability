@@ -1,3 +1,11 @@
+/* 
+ * stabilitycoeficient.c
+ * 
+ * Copyright (C) 2015 Bernardo <b.b.monteiro@gmail.com>
+ *
+ * This file is released under the GPLv2
+ */
+
 /*Expected input: 
  * M0: rocket's mass without fins;
  * CM0: rocket's center of mass without fins. Origin is on the tip of the nose;
