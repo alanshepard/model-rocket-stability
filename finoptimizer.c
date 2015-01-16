@@ -15,7 +15,7 @@
 #include <math.h>
 #include "stability.h"
 #include "ellipticalWing.h"
-#define PRECISION 1e-8
+#define PRECISION 1e-7
 #define DENSITY 1.25 /*PLA density (g/cm^3)*/
 #define INTENDED_STABILITY_COEFICIENT 1
 //#define DEBUG
@@ -23,7 +23,7 @@
 double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double a);
 
 main(){
-	double M0=30, CM0=30, CN0=2, Z0=0, length=40, t=0.08, aspectRatio=2, bodyRadius=1;
+	double M0=46.7, CM0=18.08348, CN0=2, Z0=1.76148, length=30.778, t=0.12, aspectRatio=1.5, bodyRadius=1;
 	int nfins=3;
 
 	/*Get input data*/
@@ -54,6 +54,13 @@ main(){
 			if(x>interval[1] || current<last){ /*passed by the maximum value without noticing it*/
 				/*prepare for a finer search*/
 				step/=2;
+				
+				/*if step is too small, no solution could be found. Exit with error*/
+				if(step<PRECISION){
+					fprintf(stderr,"Err1: No solution could be found. Try increasing the aspect ratio.\n");
+					return 1;
+				}
+
 				x=interval[0]-step; /*step will be added on the end of this iteration, so we must compensate for it*/
 				last=-HUGE_VAL;
 				continue;
@@ -76,8 +83,12 @@ main(){
 
 	/*print results*/
 	printf("a=(%lf+-%lf)cm\n",a,PRECISION/2);
-	printf("b=(%lf+-%lf)cm\n",ellipticalSpan(a,aspectRatio),ellipticalSpan(PRECISION/2,aspectRatio));
+	printf("b=%lfcm\n",ellipticalSpan(a,aspectRatio));
+	printf("mass=%lfg\n",nfins*ellipticalVolume(a,ellipticalSpan(a,aspectRatio),t)*DENSITY);
+	printf("t=%lf\n",t);
+	printf("aspect ratio = %lf\n",aspectRatio);
 	printf("stability coefficient = %lf\n",stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, a));
+	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,2*a*t);
 }
 
 /*stabilityCoefficient: returns the stability coefficient for a
