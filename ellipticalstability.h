@@ -13,6 +13,15 @@
 #define STABILITY_H
 #include <math.h>
 
+/*** Function Prototypes ***/
+double CNfins_nointerference(int n, double aspectRatio, double referenceRadius, double rootChord, double span);
+double interferenceCoeficient(double span, double tailRadius);
+double CNfins(int n, double aspectRatio, double bodyRadius, double rootChord, double span);
+double Zfin(double finStart, double rootChord);
+double stabilityCoefficient(double density, double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord);
+double finVolume(double rootChord, double span, double t);
+/***************************/
+
 /*Barowman method*/
 
 /*CNfin_nointerference: Calculates the normal force coeficient of a set of n fins (n=3,4), without accounting for body interference*/
@@ -74,8 +83,8 @@ double stabilityCoefficient(double density, double M0, double CM0, double CN0, d
 
 /*finVolume: returns the volume of an elliptical fin with a simmetrical NACA
  * profile for the parameters provided*/
- double finVolume(double rootChord, double span, double t){
-	 return 1.826888*t*rootChord/2*rootChord/2*s;
+double finVolume(double rootChord, double span, double t){
+	 return 1.826888*t*rootChord/2*rootChord/2*span;
  }
 
 #endif
