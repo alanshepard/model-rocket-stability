@@ -45,7 +45,7 @@ double Zfin(double finStart, double rootChord){
 double stabilityCoefficient(double density, double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord){
 
 	/*center of pressure*/
-	const double span=rootChord*aspectRatio*M_PI/2;
+	const double span=rootChord*aspectRatio*M_PI/4;
 	double CNt,Zt,Z;
 	
 	if(rootChord!=0){
