@@ -18,7 +18,7 @@
 /*CNfin_nointerference: Calculates the normal force coeficient of a set of n fins (n=3,4), without accounting for body interference*/
 double CNfins_nointerference(int n, double aspectRatio, double referenceRadius, double rootChord, double span){
 
-	return (n*aspectRatio*(M_PI*span*rootChord)i/(4*pow(referenceRadius,2))/(2+sqrt(4+pow(aspectRatio,2)));
+	return (n*aspectRatio*(M_PI*span*rootChord))/(4*pow(referenceRadius,2))/(2+sqrt(4+pow(aspectRatio,2)));
 }
 
 /*interferenceCoeficient: calculates the interference coeficient for the set of fins.*/

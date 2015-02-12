@@ -23,13 +23,12 @@
 #include <stdio.h>
 #include <math.h>
 #include "stability.h"
-#include "ellipticalWing.h"
 #define PRECISION 1e-7
 #define DENSITY 1.25 /*PLA density (g/cm^3)*/
-#define INTENDED_STABILITY_COEFICIENT 1
+#define INTENDED_STABILITY_COEFICIENT 1.0
 //#define DEBUG
 
-double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double a);
+double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord);
 
 main(){
 	double M0=46.7, CM0=18.08348, CN0=2, Z0=1.76148, length=30.778, t=0.12, aspectRatio=1.5, bodyRadius=1;
@@ -37,8 +36,8 @@ main(){
 
 	/*Get input data*/
 	
-	double x; /*x is approaching a*/
-	double interval[2]={0,length/2}; /*we know a is in this interval*/
+	double x; /*x is approaching rootChord*/
+	double interval[2]={0,length}; /*we know rootChord is in this interval*/
 	double step=(interval[1]-interval[0])/2;
 
 #ifdef DEBUG
@@ -54,7 +53,8 @@ main(){
 #endif
 
 		double current,last=-HUGE_VAL; /*stores stability coeficients*/
-		for(x=interval[0];(current=stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, x))<=INTENDED_STABILITY_COEFICIENT;x+=step){
+
+		for(x=interval[0];(current=stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio,nfins,bodyRadius,x))<=INTENDED_STABILITY_COEFICIENT;x+=step){
 
 #ifdef DEBUG
 			fprintf(stderr,"x=%lf, coefficient=%lf\n",x,current); /*DEBUG*/
@@ -88,49 +88,46 @@ main(){
 		step=(interval[1]-interval[0])/2;
 	}
 
-	double a=(interval[0]+interval[1])/2;
+	double rootChord=(interval[0]+interval[1])/2;
 
 	/*print results*/
-	printf("a=(%lf+-%lf)cm\n",a,PRECISION/2);
-	printf("b=%lfcm\n",ellipticalSpan(a,aspectRatio));
-	printf("mass=%lfg\n",nfins*ellipticalVolume(a,ellipticalSpan(a,aspectRatio),t)*DENSITY);
+	printf("rootChord=(%lf+-%lf)cm\n",rootChord,PRECISION/2);
+	//printf("b=%lfcm\n",ellipticalSpan(a,aspectRatio));
+	//printf("mass=%lfg\n",nfins*ellipticalVolume(a,ellipticalSpan(a,aspectRatio),t)*DENSITY);
 	printf("t=%lf\n",t);
 	printf("aspect ratio = %lf\n",aspectRatio);
-	printf("stability coefficient = %lf\n",stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, a));
-	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,2*a*t);
+	printf("stability coefficient = %lf\n",stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, rootChord));
+	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,2*rootChord/2*t);
 
 	printf("\n");
 }
 
 /*stabilityCoefficient: returns the stability coefficient for a
- * elliptical wing with the paramenters provided. The wing is modelled
- * as a trapezoidal wing using ellipticalWing.h*/
+ * elliptical wing with the paramenters provided.*/
 
-double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double a){
+double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord){
 
 	/*center of pressure*/
-	const double rootChord=ellipticalRootChord(a);
-	const double tipChord=ellipticalTipChord(a);
-	const double span=ellipticalSpan(a,aspectRatio);
-	const double sweepAngle=0;
+	const double span=rootChord*aspectRatio*M_PI/2;
 	double CNt,Zt,Z;
 	
-	if(a!=0){
-		CNt=CNfins(nfins,aspectRatio,bodyRadius,rootChord,tipChord,span,sweepAngle);
+	if(rootChord!=0){
+		CNt=CNfins(nfins,aspectRatio,bodyRadius,rootChord,span);
 
-		Zt=Zfin(length-2*a,rootChord,tipChord,(rootChord-tipChord)/2); 
+		Zt=Zfin(length-rootChord,rootChord); 
 
 		Z=(CN0 * Z0 + CNt * Zt)/(CN0+CNt);
 	}else CNt=0,Zt=0,Z=Z0;
 
 	/*center of mass*/
-	double Mt=nfins*ellipticalVolume(a,span,t)*DENSITY;
+	double Mt=nfins*1.826889*t*pow(rootChord/2,2)*span*DENSITY;
 
-	double CMt=length-a; /*considering that the center of mass of each fin 
-			      * is in the middle of the chord. This is an
-			      * approximation which results in a more
-			      * conservative stability coefficient (i.e. it
-			      * yields smaller stability coefficients)*/
+	double CMt=length-rootChord/2; /* considering that the center of mass of
+					* each fin is in the middle of the
+					* chord. This is an approximation which
+					* results in a more conservative
+					* stability coefficient (i.e. it yields
+					* smaller stability coefficients)*/
 
 	double CM=(CM0*M0+CMt*Mt)/(M0+Mt);
 
