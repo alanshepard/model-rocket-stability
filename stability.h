@@ -40,4 +40,36 @@ double Zfin(double finStart, double rootChord){
 	return rootChord*(1/2-2/(3*M_PI));
 }
 
+/*stabilityCoefficient: returns the stability coefficient for a
+ * elliptical wing with the paramenters provided.*/
+double stabilityCoefficient(double density, double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord){
+
+	/*center of pressure*/
+	const double span=rootChord*aspectRatio*M_PI/2;
+	double CNt,Zt,Z;
+	
+	if(rootChord!=0){
+		CNt=CNfins(nfins,aspectRatio,bodyRadius,rootChord,span);
+
+		Zt=Zfin(length-rootChord,rootChord); 
+
+		Z=(CN0 * Z0 + CNt * Zt)/(CN0+CNt);
+	}else CNt=0,Zt=0,Z=Z0;
+
+	/*center of mass*/
+	double Mt=nfins*1.826889*t*pow(rootChord/2,2)*span*density;
+
+	double CMt=length-rootChord/2; /* considering that the center of mass of
+					* each fin is in the middle of the
+					* chord. This is an approximation which
+					* results in a more conservative
+					* stability coefficient (i.e. it yields
+					* smaller stability coefficients)*/
+
+	double CM=(CM0*M0+CMt*Mt)/(M0+Mt);
+
+	/*stability coefficient*/
+	return (Z-CM)/(2*bodyRadius);
+}
+
 #endif

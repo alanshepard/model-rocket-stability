@@ -24,14 +24,12 @@
 #include <math.h>
 #include "stability.h"
 #define PRECISION 1e-7
-#define DENSITY 1.25 /*PLA density (g/cm^3)*/
 #define INTENDED_STABILITY_COEFICIENT 1.0
 //#define DEBUG
 
-double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord);
-
 main(){
 	double M0=46.7, CM0=18.08348, CN0=2, Z0=1.76148, length=30.778, t=0.12, aspectRatio=1.5, bodyRadius=1;
+	double PLAdensity=1.25; /*PLA density (g/cm^3)*/
 	int nfins=3;
 
 	/*Get input data*/
@@ -54,7 +52,7 @@ main(){
 
 		double current,last=-HUGE_VAL; /*stores stability coeficients*/
 
-		for(x=interval[0];(current=stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio,nfins,bodyRadius,x))<=INTENDED_STABILITY_COEFICIENT;x+=step){
+		for(x=interval[0];(current=stabilityCoefficient(PLAdensity, M0,CM0,CN0,Z0,length,t,aspectRatio,nfins,bodyRadius,x))<=INTENDED_STABILITY_COEFICIENT;x+=step){
 
 #ifdef DEBUG
 			fprintf(stderr,"x=%lf, coefficient=%lf\n",x,current); /*DEBUG*/
@@ -95,41 +93,9 @@ main(){
 	//printf("b=%lfcm\n",ellipticalSpan(a,aspectRatio));
 	//printf("mass=%lfg\n",nfins*ellipticalVolume(a,ellipticalSpan(a,aspectRatio),t)*DENSITY);
 	printf("aspect ratio = %lf\n",aspectRatio);
-	printf("stability coefficient = %lf\n",stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, rootChord));
+	printf("stability coefficient = %lf\n",stabilityCoefficient(PLAdensity, M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, rootChord));
 	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,rootChord*t);
 
 	printf("\n");
 }
 
-/*stabilityCoefficient: returns the stability coefficient for a
- * elliptical wing with the paramenters provided.*/
-
-double stabilityCoefficient(double M0, double CM0, double CN0, double Z0, double length, double t, double aspectRatio, int nfins, double bodyRadius, double rootChord){
-
-	/*center of pressure*/
-	const double span=rootChord*aspectRatio*M_PI/2;
-	double CNt,Zt,Z;
-	
-	if(rootChord!=0){
-		CNt=CNfins(nfins,aspectRatio,bodyRadius,rootChord,span);
-
-		Zt=Zfin(length-rootChord,rootChord); 
-
-		Z=(CN0 * Z0 + CNt * Zt)/(CN0+CNt);
-	}else CNt=0,Zt=0,Z=Z0;
-
-	/*center of mass*/
-	double Mt=nfins*1.826889*t*pow(rootChord/2,2)*span*DENSITY;
-
-	double CMt=length-rootChord/2; /* considering that the center of mass of
-					* each fin is in the middle of the
-					* chord. This is an approximation which
-					* results in a more conservative
-					* stability coefficient (i.e. it yields
-					* smaller stability coefficients)*/
-
-	double CM=(CM0*M0+CMt*Mt)/(M0+Mt);
-
-	/*stability coefficient*/
-	return (Z-CM)/(2*bodyRadius);
-}
