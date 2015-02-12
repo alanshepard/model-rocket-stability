@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 #include <math.h>
-#include "stability.h"
+#include "ellipticalstability.h"
 #define PRECISION 1e-7
 #define INTENDED_STABILITY_COEFICIENT 1.0
 //#define DEBUG
