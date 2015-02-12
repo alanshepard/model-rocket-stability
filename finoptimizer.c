@@ -94,10 +94,9 @@ main(){
 	printf("rootChord=(%lf+-%lf)cm\n",rootChord,PRECISION/2);
 	//printf("b=%lfcm\n",ellipticalSpan(a,aspectRatio));
 	//printf("mass=%lfg\n",nfins*ellipticalVolume(a,ellipticalSpan(a,aspectRatio),t)*DENSITY);
-	printf("t=%lf\n",t);
 	printf("aspect ratio = %lf\n",aspectRatio);
 	printf("stability coefficient = %lf\n",stabilityCoefficient(M0,CM0,CN0,Z0,length,t,aspectRatio, nfins, bodyRadius, rootChord));
-	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,2*rootChord/2*t);
+	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,rootChord*t);
 
 	printf("\n");
 }
