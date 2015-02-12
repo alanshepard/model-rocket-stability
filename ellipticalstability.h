@@ -25,7 +25,7 @@ double CNfins_nointerference(int n, double aspectRatio, double referenceRadius, 
 double interferenceCoeficient(double span, double tailRadius){
 	register const double t=(span+tailRadius)/tailRadius;
 
-	return 2/(M_PI*pow(1-1/t,2))*((1+1/pow(t,4))*(0.5*atan(1/2*(t-1/t)))-1/pow(t,2)*((t-1/t)+2*atan(1/t)));
+	return 1+1/t;
 }
 
 /*CNfins: Calculates the normal force coeficient of a set of n fins (n=3,4), accounting for body interference, considering a cilindrical body.*/
@@ -57,7 +57,7 @@ double stabilityCoefficient(double density, double M0, double CM0, double CN0, d
 	}else CNt=0,Zt=0,Z=Z0;
 
 	/*center of mass*/
-	double Mt=nfins*1.826889*t*pow(rootChord/2,2)*span*density;
+	double Mt=nfins*finVolume(rootChord,span,t)*density;
 
 	double CMt=length-rootChord/2; /* considering that the center of mass of
 					* each fin is in the middle of the
@@ -71,5 +71,11 @@ double stabilityCoefficient(double density, double M0, double CM0, double CN0, d
 	/*stability coefficient*/
 	return (Z-CM)/(2*bodyRadius);
 }
+
+/*finVolume: returns the volume of an elliptical fin with a simmetrical NACA
+ * profile for the parameters provided*/
+ double finVolume(double rootChord, double span, double t){
+	 return 1.826888*t*rootChord/2*rootChord/2*s;
+ }
 
 #endif
