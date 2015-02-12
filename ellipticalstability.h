@@ -18,7 +18,7 @@
 /*CNfin_nointerference: Calculates the normal force coeficient of a set of n fins (n=3,4), without accounting for body interference*/
 double CNfins_nointerference(int n, double aspectRatio, double referenceRadius, double rootChord, double span){
 
-	return (n*aspectRatio*(M_PI*span*rootChord))/(4*pow(referenceRadius,2))/(2+sqrt(4+pow(aspectRatio,2)));
+	return (n*aspectRatio*M_PI*(span*rootChord)/(4*pow(referenceRadius,2)))/(2+sqrt(4+pow(aspectRatio,2)));
 }
 
 /*interferenceCoeficient: calculates the interference coeficient for the set of fins.*/
@@ -37,7 +37,7 @@ double CNfins(int n, double aspectRatio, double bodyRadius, double rootChord, do
  * paramenters. chordDisplacement is the longitudinal distance between
  * the leading edge of fin root and the leading edge of fin tip*/
 double Zfin(double finStart, double rootChord){
-	return rootChord*(1/2-2/(3*M_PI));
+	return finStart+rootChord*(1/2-2/(3*M_PI));
 }
 
 /*stabilityCoefficient: returns the stability coefficient for a
@@ -49,7 +49,7 @@ double stabilityCoefficient(double density, double M0, double CM0, double CN0, d
 	double CNt,Zt,Z;
 	
 	if(rootChord!=0){
-		CNt=CNfins(nfins,aspectRatio,bodyRadius,rootChord,span);
+		CNt=CNfins_nointerference(nfins,aspectRatio,bodyRadius,rootChord,span);
 
 		Zt=Zfin(length-rootChord,rootChord); 
 
