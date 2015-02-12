@@ -49,7 +49,7 @@ double stabilityCoefficient(double density, double M0, double CM0, double CN0, d
 	double CNt,Zt,Z;
 	
 	if(rootChord!=0){
-		CNt=CNfins_nointerference(nfins,aspectRatio,bodyRadius,rootChord,span);
+		CNt=CNfins(nfins,aspectRatio,bodyRadius,rootChord,span);
 
 		Zt=Zfin(length-rootChord,rootChord); 
 
