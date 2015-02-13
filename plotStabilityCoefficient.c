@@ -1,9 +1,14 @@
 /* 
- * stabilitycoeficient.c
+ * plotStabilityCoefficient.c
  * 
  * Copyright (C) 2015 Bernardo <b.b.monteiro@gmail.com>
  *
  * This file is released under the GPLv2
+ */
+
+/* This program outputs a series of ordenated pairs to use for ploting a graph
+ * of stability coefficient vs root chord (suggested plotting program:
+ * gnuplot).
  */
 
 /*Expected input: 

@@ -1,5 +1,5 @@
 /* 
- * stability.h
+ * ellipticalstability.h
  * 
  * Copyright (C) 2015 Bernardo <b.b.monteiro@gmail.com>
  *
