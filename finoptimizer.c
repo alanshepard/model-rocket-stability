@@ -97,5 +97,7 @@ main(){
 	printf("profile: NACA00%02.lf; maximum thickness: %lfcm\n",t*100,rootChord*t);
 
 	printf("\n");
+
+	return 0;
 }
 
