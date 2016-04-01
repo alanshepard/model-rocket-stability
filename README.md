@@ -1,6 +1,6 @@
 # model-rocket-stability
 
-Copyright (C) 2015 Bernardo <b.b.monteiro@gmail.com>
+Copyright (C) 2015,2016 Bernardo <b.b.monteiro@gmail.com>
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License version 2 as published by the Free
