@@ -2,29 +2,26 @@
 #define __ELLIPTICALFINS_H
 
 #include "rocket.h"
+#include <cmath>
 
 class EllipticalFins: public Fins{
 	public:
-	double CN();
-	double Z();
-	double span();
-
-	//Automatically calculates an elliptical set of fins to get the right stability coefficient
-	EllipticalFins(const Rocket&, double stabilityCoefficient, Fins baseFins);
+	double CN() const;
+	double Z() const {return rootChord*(1/2-2/(3*M_PI));}
+	double CM() const {return rootChord/2.;}
+	double span() const {return rootChord*AR*M_PI/4;}
 };
 
 class NACAEllipticalFins: public EllipticalFins{
 	public:
 	double t; //maximum thickness, in percentage of rootChord
-	double m();
-	double CM();
+	double M() const {return density*1.826888*t*rootChord/2*rootChord/2*span();}
 };
 
 class FlatEllipticalFins: public EllipticalFins{
 	public:
 	double t; //thickness
-	double m();
-	double CM();
+	double M() const {return density*t*AR*rootChord*rootChord;}
 };
 
 #endif //__ELLIPTICALFINS_H

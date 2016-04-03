@@ -10,53 +10,56 @@
 #define __ROCKET_H
 
 #include <iostream>
+#include <ostream>
 #include <map>
 
 class Component{
 	public:
-	virtual double m() const; //mass
-	virtual double CM() const; //center of mass
-	virtual double CN() const; //normal force coefficient
-	virtual double Z() const; //center of pressure
-};
+	virtual ~Component(){}
 
-class RocketComponent: public Component {
-	public:
+	virtual double M() const=0; //mass
+	virtual double CM() const=0; //center of mass
+	virtual double CN() const=0; //normal force coefficient
+	virtual double Z() const=0; //center of pressure
+	virtual void print(std::ostream&) const;
 	double x; //starting position, nose==0
 
-	friend std::ostream& operator<< (std::ostream&, const RocketComponent&);
 };
 
+class Bad_Range { };
+
 class Rocket{
-	private:
-	double length;
-	double diameter;
-	std::map<std::string,RocketComponent> part;
 
 	public:
-	Rocket(FILE*); //loads rocket from file
-	explicit Rocket(int n); //creates an empty rocket with n components
-	~Rocket() {}
+	double length;
+	double diameter;
 
-	Rocket& add(const Component&); //add Component
+	std::map<std::string,Component*> part;
+	typedef std::map<std::string,Component*>::const_iterator CI;
+
+	//Rocket(FILE*); //loads rocket from file
+	//Rocket(); //creates an empty rocket
+	//~Rocket() {}
 
 	friend std::ostream& operator<< (std::ostream&, const Rocket&);
 
-	double& l() {return length;}
-	double& d() {return diameter;}
-	double m() const;
+	double l() const {return length;}
+	double d() const {return diameter;}
+	double M() const;
 	double CM() const;
 	double CN() const;
 	double Z() const;
-	double stabilityCoefficient() const {return (Z()-CM())/d;}
+	double stabilityCoefficient() const {return (Z()-CM())/d();}
 };
 
 class Fins: public Component{
 	public:
+	Rocket* rocket; //rocket for reference diameter
 	int n; //number of fins
 	double rootChord;
 	double AR; //aspectRatio
 	double density;
+	virtual double span() const=0;
 };
 
 class Tube: public Component{
@@ -64,30 +67,36 @@ class Tube: public Component{
 	double length;
 	double linDensity;
 
-	double m() {return length*linDensity;}
-	double CM() {return length/2.;}
-	double CN() {return 0.;}
-	double Z() {return 0.;}
+	double M() const {return length*linDensity;}
+	double CM() const {return length/2.;}
+	double CN() const {return 0.;}
+	double Z() const {return 0.;}
 };
 
 //Part: general Component, user must insert data manually
 class Part: public Component{
-	public
-	double mass;
+	public:
+	double m;
 	double cm;
 	double cn;
 	double z;
 
-	double m() {return mass;}
-	double CM() {return cm;}
-	double CN() {return cn;}
-	double Z() {return z;}
+	double M() const {return m;}
+	double CM() const {return cm;}
+	double CN() const {return cn;}
+	double Z() const {return z;}
 };
 
-class DidNotConverge {}
 
 //optmizeFins: optimizes rootChord of find to achive the stability
 //coefficient c. Fins must be in r.
-void optimizeFins(Rocket* r, Fins* fins, double c);
+int optimizeFins(Rocket* r, Fins* fins, double c);
+class Did_Not_Converge {};
+class Bad_Algorithm {};
+
+inline std::ostream& operator<< (std::ostream& o, const Component& c){
+	  c.print(o); // delegate the work to a polymorphic member function.
+	    return o;
+}
 
 #endif //__ROCKET_H
