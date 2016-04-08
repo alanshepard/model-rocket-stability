@@ -36,6 +36,11 @@ class Rocket{
 
 	std::map<std::string,Component*> part;
 	typedef std::map<std::string,Component*>::const_iterator CI;
+	
+	Rocket(double ll, double dd){
+		length = ll;
+		diameter = dd;
+	}
 
 	//Rocket(FILE*); //loads rocket from file
 	//Rocket(); //creates an empty rocket
@@ -66,6 +71,8 @@ class Tube: public Component{
 	public:
 	double length;
 	double linDensity;
+	
+	Tube(ll,ld){length=ll; linDensity=ld;}
 
 	double M() const {return length*linDensity;}
 	double CM() const {return length/2.;}
@@ -88,11 +95,21 @@ class Part: public Component{
 };
 
 class Ogive: public Component{
+	public:
 	double m;
 	double cm;
 	double volume;
 	double area; //base area
 	double length;
+
+	Ogive(double mass, double centerOfMass, double vv, double aa, double ll){
+		x = 0.;
+		m = mass;
+		cm = centerOfMass;
+		volume = vv;
+		area = aa;
+		length = ll;
+	}
 
 	double M() const {return m;}
 	double CM() const {return cm;}
