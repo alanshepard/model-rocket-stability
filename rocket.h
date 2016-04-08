@@ -87,6 +87,19 @@ class Part: public Component{
 	double Z() const {return z;}
 };
 
+class Ogive: public Component{
+	double m;
+	double cm;
+	double volume;
+	double area; //base area
+	double length;
+
+	double M() const {return m;}
+	double CM() const {return cm;}
+	double CN() const {return 2.0;}
+	double Z() const {return length-(volume/area);}
+};
+
 
 //optmizeFins: optimizes rootChord of find to achive the stability
 //coefficient c. Fins must be in r.
