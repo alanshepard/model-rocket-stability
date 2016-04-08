@@ -1,3 +1,11 @@
+/* 
+ * ellipticalstability.h
+ * 
+ * Copyright (C) 2015,2016 Bernardo <b.b.monteiro@gmail.com>
+ *
+ * This file is released under the GPLv2
+ */
+
 #ifndef __ELLIPTICALFINS_H
 #define __ELLIPTICALFINS_H
 
