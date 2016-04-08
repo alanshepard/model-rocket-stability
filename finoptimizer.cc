@@ -12,7 +12,7 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	std::cout<<"Using algorithm "<<algorithm<<"\n";
 
 	const int max_iter = 100;
-	const double precision = 2*r->d()*std::numeric_limits<double>::epsilon();
+	const double precision = r->l()*std::numeric_limits<double>::epsilon();
 
 	double a = 0.;
 	double b = r->l()/2.;
