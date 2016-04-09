@@ -23,7 +23,7 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	const double precision = r->l()*std::numeric_limits<double>::epsilon();
 
 	double a = 0.;
-	double b = r->l()/2.;
+	double b = r->l()-r->CM();
 
 	fins->rootChord = a;
 	double fa = r->stabilityCoefficient()-c;
@@ -32,6 +32,11 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	fins->rootChord = b;
 	double fb = r->stabilityCoefficient()-c;
 	std::cout<<"b="<<b<<" "<<"fb="<<fb<<"\n";
+
+	if(fa*fb>0){
+		std::cerr<<"Err: function does not changes sign\n";
+		throw Did_Not_Converge();
+	}
 	
 	double next;
 	double fnext=std::numeric_limits<double>::infinity();
@@ -39,7 +44,7 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 
 	if(algorithm == "pegasus"){
 		std::cout<<"i: x        err\n";
-		while(fabs(fnext)>precision && fabs((a-b)/2)>precision && i++ <=max_iter){
+		while(fabs(fnext)>precision && fabs((a-b)/2)>precision && ++i <=max_iter){
 			next = a-fa*(b-a)/(fb-fa);
 			fins->rootChord = next;
 			fnext = r->stabilityCoefficient()-c;
@@ -54,7 +59,7 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 			}else break;
 		}
 	}else if(algorithm == "bissection"){
-		while(fabs(fnext)>precision && fabs((a-b)/2)>precision && i++ <=max_iter){
+		while((fabs(fnext)>precision || fabs((a-b)/2)>precision) && ++i <=max_iter){
 			next = (a+b)/2;
 			fins->rootChord = next;
 			fnext = r->stabilityCoefficient()-c;

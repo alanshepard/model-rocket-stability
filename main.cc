@@ -17,12 +17,7 @@ int main(){
 	r.length = 30.;
 	r.diameter = 2.;
 
-	Part rocketNoFins;
-	rocketNoFins.x = 30.;
-	rocketNoFins.cm = 30-18.08348;
-	rocketNoFins.m = 46.7;
-	rocketNoFins.cn = 2;
-	rocketNoFins.z = 30-1.76148;
+	Part rocketNoFins(0,46.7, 18.08348, 2, 1.76148, 30.0);
 
 	NACAEllipticalFins f;
 	f.n = 3;
@@ -30,7 +25,6 @@ int main(){
 	f.AR = 1.5;
 	f.density = 1.25;
 	f.rocket=&r;
-	f.x = r.l();
 
 	r.part["Rocket Without Fins"] = &rocketNoFins;
 	r.part["Fins"] = &f;

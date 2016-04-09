@@ -1,5 +1,5 @@
 /* 
- * rocket.h
+ * rocket.cc
  * 
  * Copyright (C) 2015,2016 Bernardo <b.b.monteiro@gmail.com>
  *
@@ -22,7 +22,7 @@ double Rocket::M() const{
 double Rocket::CM() const{
 	double moment = 0.;
 	for (CI p=part.begin(); p!=part.end(); p++)
-		moment += (p->second->x - p->second->CM()) * p->second->M();
+		moment += (p->second->X_0() + p->second->CM()) * p->second->M();
 
 //	if(moment<0)
 //		throw Bad_Range();
@@ -45,7 +45,7 @@ double Rocket::CN() const{
 double Rocket::Z() const{
 	double moment = 0.;
 	for (CI p=part.begin(); p!=part.end(); p++)
-		moment += (p->second->x - p->second->Z()) * p->second->CN();
+		moment += (p->second->X_0() + p->second->Z()) * p->second->CN();
 
 //	if(moment<0)
 //		throw Bad_Range();
@@ -73,8 +73,8 @@ std::ostream& operator<< (std::ostream& o, const Rocket& r){
 }
 
 void Component::print(std::ostream& o) const{
-	o<<"x: " <<x   <<"\n";
-	o<<"m: " <<M() <<"\n";
+	o<<"X_0: "<<X_0()<<"\n";
+	o<<"M: " <<M() <<"\n";
 	o<<"CM: "<<CM()<<"\n";
 	o<<"CN: "<<CN()<<"\n";
 	o<<"Z: " <<Z() <<"\n";

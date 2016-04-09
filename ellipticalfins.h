@@ -15,7 +15,7 @@
 class EllipticalFins: public Fins{
 	public:
 	double CN() const;
-	double Z() const {return rootChord*(1/2-2/(3*M_PI));}
+	double Z() const {return rootChord*.2887793409211;}
 	double CM() const {return rootChord/2.;}
 	double span() const {return rootChord*AR*M_PI/4;}
 };

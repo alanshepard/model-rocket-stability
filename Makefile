@@ -14,7 +14,7 @@ ODIR=obj
 
 LIBS=
 
-_DEPS = rocket.h ellipticalfins.h
+_DEPS = rocket.h ellipticalfins.h dpe-common.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 _OBJ = rocket.o finoptimizer.o ellipticalfins.o
@@ -28,6 +28,9 @@ $(ODIR)/%.o: %.cc $(DEPS)
 		$(CC) -c -o $@ $< $(CFLAGS)
 
 main: main.cc $(OBJ)
+		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+ 
+dpe-c: dpe-c.cc $(OBJ)
 		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 .PHONY: clean
