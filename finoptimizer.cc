@@ -20,18 +20,25 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	std::cout<<"Using algorithm "<<algorithm<<"\n";
 
 	const int max_iter = 100;
-	const double precision = r->l()*std::numeric_limits<double>::epsilon();
+	const int max_pre_iter = 3; //maximum iterations to define interval
+	const double precision = 1e-7;//r->l()*std::numeric_limits<double>::epsilon();
 
 	double a = 0.;
-	double b = r->l()-r->CM();
 
 	fins->rootChord = a;
 	double fa = r->stabilityCoefficient()-c;
 	std::cout<<"a="<<a<<" "<<"fa="<<fa<<"\n";
 
-	fins->rootChord = b;
-	double fb = r->stabilityCoefficient()-c;
-	std::cout<<"b="<<b<<" "<<"fb="<<fb<<"\n";
+	//Get b
+	double b = (r->l()-r->CM())/pow(2,max_pre_iter);
+	double fb;
+	int i=0;
+	do{
+		b*=2;
+		fins->rootChord = b;
+		fb = r->stabilityCoefficient()-c;
+		std::cout<<i+1<<": "<<"b="<<b<<" "<<"fb="<<fb<<"\n";
+	}while(fa*fb>0 && i++<max_pre_iter);
 
 	if(fa*fb>0){
 		std::cerr<<"Err: function does not changes sign\n";
@@ -40,7 +47,7 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	
 	double next;
 	double fnext=std::numeric_limits<double>::infinity();
-	int i=0;
+	i=0;
 
 	if(algorithm == "pegasus"){
 		std::cout<<"i: x        err\n";
