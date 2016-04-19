@@ -19,9 +19,9 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	std::cout<<"\n#### FIN OPTIMIZER ####\n";
 	std::cout<<"Using algorithm "<<algorithm<<"\n";
 
-	const int max_iter = 100;
-	const int max_pre_iter = 3; //maximum iterations to define interval
-	const double precision = 1e-7;//r->l()*std::numeric_limits<double>::epsilon();
+	const int max_iter = 500;
+	const int max_pre_iter = 16; //maximum iterations to define interval
+	const double precision = 1e-7;//micrometers precision
 
 	double a = 0.;
 
@@ -30,11 +30,11 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	std::cout<<"a="<<a<<" "<<"fa="<<fa<<"\n";
 
 	//Get b
-	double b = (r->l()-r->CM())/pow(2,max_pre_iter);
+	double b=0;
 	double fb;
 	int i=0;
 	do{
-		b*=2;
+		b = (i+1)*(r->l()-r->CM())/max_pre_iter;
 		fins->rootChord = b;
 		fb = r->stabilityCoefficient()-c;
 		std::cout<<i+1<<": "<<"b="<<b<<" "<<"fb="<<fb<<"\n";
