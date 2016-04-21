@@ -73,8 +73,8 @@ class Fins: public Component{
 	double X_f() const {return rocket->l();}
 	void print(std::ostream& o) const{
 		o<<n<<"fins\n";
-		o<<"rootChord="<<rootChord<<"\n";
-		o<<"span="<<span()<<"\n";
+		o<<"rootChord="<<rootChord<<"[cm]\n";
+		o<<"span="<<span()<<"[cm]\n";
 	}
 };
 

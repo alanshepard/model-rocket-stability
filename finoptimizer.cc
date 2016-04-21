@@ -14,7 +14,7 @@
 int optimizeFins(Rocket* r, Fins* fins, double c){
 	//solve for r.stabilityCoefficient()-c==0, changing
 	//fins.rootChord.
-	std::string algorithm="pegasus";
+	std::string algorithm="bissection";
 	
 	std::cout<<"\n#### FIN OPTIMIZER ####\n";
 	std::cout<<"Using algorithm "<<algorithm<<"\n";

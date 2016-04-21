@@ -4,9 +4,10 @@
 
 int main(){
 	Ogive ogiveC=parabola; //select ogive
-	Part payload(ogiveC.X_f(), 2.3+6.0+1.8); //atimetro+baterias+encaixe
+	//Part payload(ogiveC.X_f(), 2.3+6.0+1.8); //altimetro+baterias+encaixe
+	Part payload(ogiveC.X_f(), micropeakMass); //micropeak
 	Tube tubeC(19.7, ogiveC.X_f(), tubeLinDensity);
-	Engine engineC = bandeiranteB;
+	Engine engineC = bandeiranteC_ejection;
 
 	Rocket dpeC(tubeC.X_f(),1.8);
 	engineC.rocket=&dpeC;
@@ -26,7 +27,7 @@ int main(){
 	
 	std::cout<<dpeC;
 
-	optimizeFins(&dpeC, &f, 1.0);
+	optimizeFins(&dpeC, &f, 1);
 
 	std::cout<<f;
 }
