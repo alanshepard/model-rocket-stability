@@ -20,7 +20,7 @@ int optimizeFins(Rocket* r, Fins* fins, double c){
 	std::cout<<"Using algorithm "<<algorithm<<"\n";
 
 	const int max_iter = 500;
-	const int max_pre_iter = 16; //maximum iterations to define interval
+	const int max_pre_iter = 200; //maximum iterations to define interval
 	const double precision = 1e-7;//micrometers precision
 
 	double a = 0.;

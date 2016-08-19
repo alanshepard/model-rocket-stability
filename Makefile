@@ -33,6 +33,18 @@ main: main.cc $(OBJ)
 dpe-c: dpe-c.cc $(OBJ)
 		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
+dpe-b: dpe-b.cc $(OBJ)
+		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+dpe-d: dpe-d.cc $(OBJ)
+		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+dpe-e: dpe-e.cc $(OBJ)
+		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
+agua: agua.cc $(OBJ)
+		$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
+
 .PHONY: clean
 
 clean:

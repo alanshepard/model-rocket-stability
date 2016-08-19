@@ -18,7 +18,7 @@ class Component{
 	virtual ~Component(){}
 
 	virtual double M() const=0; //mass
-	virtual double CM() const=0; //center of mass, measured from the p
+	virtual double CM() const=0; //center of mass, measured from the nose
 	virtual double CN() const=0; //normal force coefficient
 	virtual double Z() const=0; //center of pressure
 	virtual double X_0() const=0; //starting position of the component, nose==0

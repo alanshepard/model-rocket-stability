@@ -30,4 +30,10 @@ int main(){
 	optimizeFins(&dpeC, &f, 1);
 
 	std::cout<<f;
+	std::cout<<"m: "<<dpeC.M()<<"\n";
+	std::cout<<"CM: "<<dpeC.CM()<<"\n";
+	std::cout<<"Z: "<<dpeC.Z()<<"\n";
+	std::cout<<"l: "<<dpeC.l()<<"\n";
+	std::cout<<"d: "<<dpeC.d()<<"\n";
+	std::cout<<"coef: "<<(dpeC.Z()-dpeC.CM())/2<<"\n";
 }
