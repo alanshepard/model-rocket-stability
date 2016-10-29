@@ -13,3 +13,7 @@ PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 You should have received a copy of the GNU General Public License along with
 this program.  If not, see <http://www.gnu.org/licenses/>.
 
+Files description:
+rocket.h and rocket.cc: implement a Rocket class and a Component class
+ellipticalfins.h and ellipticalfins.cc: implements elliptical fins using NACA 00xx
+    profile and flat profile
